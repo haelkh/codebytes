@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="search-container">
+      <h1>Search</h1>
+      <input
+        type="text"
+        [(ngModel)]="searchText"
+        (input)="updateSearch()"
+        placeholder="Type a keyword..."
+      />
+      <p *ngIf="searchText && filteredArticles.length">
+        {{ filteredArticles.length }} posts were found.
+      </p>
+      <p *ngIf="searchText && !filteredArticles.length">No posts found.</p>
+      <div
+        *ngFor="let article of filteredArticles"
+        class="article"
+      >
+        <h2>
+          <span *ngFor="let word of splitAndHighlight(article.title)">
+            <span *ngIf="isExactMatch(word)" class="highlight">{{ word }}</span>
+            <span *ngIf="!isExactMatch(word)">{{ word }}</span>
+          </span>
+        </h2>
+        <p class="date">{{ article.date }}</p>
+        <p>
+          <span *ngFor="let word of splitAndHighlight(article.content)">
+            <span *ngIf="isExactMatch(word)" class="highlight">{{ word }}</span>
+            <span *ngIf="!isExactMatch(word)">{{ word }}</span>
+          </span>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
